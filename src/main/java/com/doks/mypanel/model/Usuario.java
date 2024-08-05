@@ -10,8 +10,11 @@ import java.util.Set;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "nome",  nullable = false)
+    private String nome;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -60,4 +63,14 @@ public class Usuario {
     public void setPermissoes(Set<Permissoes> permissoes) {
         this.permissoes = permissoes;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+
 }

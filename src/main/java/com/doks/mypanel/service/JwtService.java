@@ -1,7 +1,11 @@
 package com.doks.mypanel.service;
 
+import com.doks.mypanel.model.Usuario;
+import com.doks.mypanel.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -20,7 +24,10 @@ public class JwtService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    @PostMapping("oauth/token")
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+
     public String genertaeToken(Authentication authentication) {
 
         Instant now = Instant.now();
@@ -29,12 +36,24 @@ public class JwtService {
         String scopes = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
+
+        Usuario  usuario = usuarioRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+
+
+
+
+
+
         var claims = JwtClaimsSet.builder()
                 .issuer("MyPanel")
                 .issuedAt(now)
                 .expiresAt(expiry)
                 .claim("scope", scopes)
+                .claim("nome", usuario.getNome())
+
                 .subject(authentication.getName())
+
 
                 .build();
 

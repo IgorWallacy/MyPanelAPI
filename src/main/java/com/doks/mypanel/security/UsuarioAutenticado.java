@@ -29,6 +29,9 @@ public class UsuarioAutenticado implements UserDetails {
         return usuario.getSenha();
     }
 
+
+
+
     @Override
     public String getUsername() {
         return usuario.getEmail();
