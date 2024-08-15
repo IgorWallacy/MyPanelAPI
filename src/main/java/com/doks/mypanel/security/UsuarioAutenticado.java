@@ -6,7 +6,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+
+import java.util.Set;
+
 
 public class UsuarioAutenticado implements UserDetails {
 
@@ -19,10 +22,14 @@ public class UsuarioAutenticado implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return usuario.getPermissoes().stream()
-                .map(perfil -> new SimpleGrantedAuthority(perfil.getNome()))
-                .collect(Collectors.toList());
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(usuario.getPermissoes().getNome()));
+
+        return authorities;
     }
+
+
+
 
     @Override
     public String getPassword() {

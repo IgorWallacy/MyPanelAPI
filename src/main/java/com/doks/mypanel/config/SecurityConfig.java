@@ -1,5 +1,6 @@
 package com.doks.mypanel.config;
 
+import com.doks.mypanel.auditing.ApplicationAuditAware;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -7,6 +8,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -46,7 +48,10 @@ public class SecurityConfig {
     }
 
 
-
+    @Bean
+    public AuditorAware<Long> auditorAware() {
+        return new ApplicationAuditAware();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -55,8 +60,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/oauth/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
                                 .requestMatchers("/api/**").authenticated()
-                                .anyRequest().denyAll()
+                                .anyRequest().authenticated()
                 ).csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()) )

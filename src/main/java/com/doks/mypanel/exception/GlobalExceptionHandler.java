@@ -12,4 +12,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUsuarioNotFoundException(UsuarioNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UsuarioEmailJaExisteException.class)
+    public ResponseEntity<String> handleUsuarioNotFoundException(UsuarioEmailJaExisteException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

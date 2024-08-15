@@ -2,6 +2,7 @@ package com.doks.mypanel.model;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "permissoes")
 public class Permissoes {
@@ -13,6 +14,21 @@ public class Permissoes {
 
 
 
+    public enum PermissoesEnum {
+
+        ADMINISTRADOR("Administrador"),
+        REVENDEDOR("Revendedor");
+
+        String descricao;
+
+        PermissoesEnum(String descricao) {
+            this.descricao = descricao;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
+    }
 
     // Getters and Setters
 
@@ -33,6 +49,7 @@ public class Permissoes {
         this.nome = nome;
     }
 
+
     public enum Values {
 
         ADMINISTRADOR("Administrador"),
@@ -49,4 +66,7 @@ public class Permissoes {
         }
     }
 
+
+
 }
+
