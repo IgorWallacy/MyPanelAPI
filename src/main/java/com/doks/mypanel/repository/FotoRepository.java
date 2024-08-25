@@ -1,7 +1,7 @@
 package com.doks.mypanel.repository;
 
 import com.doks.mypanel.model.Foto;
-import com.doks.mypanel.model.dto.FotoDto;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
